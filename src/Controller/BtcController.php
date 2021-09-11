@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Service\Btc;
+use App\Service\Logger;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +27,8 @@ class BtcController extends AbstractController
         $btc = new Btc();
         $btc_rate = $btc->getBtcRate();
         if ($btc_rate && $session->get('user_logged')){
+            $logger = new Logger();
+            $logger->log(Logger::INFO, 'Successful rate request');
             return $this->json([
                 'btcRate' => $btc_rate,
             ]);
