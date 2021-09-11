@@ -18,6 +18,8 @@ class User
             file_put_contents('users.json', $json_data);
             return true;
         } catch (\Exception $ex) {
+            $logger = new Logger();
+            $logger->log(Logger::ERROR, $ex->getMessage());
             return false;
         }
 
@@ -32,6 +34,8 @@ class User
             }
             return false;
         } catch (\Exception $ex) {
+            $logger = new Logger();
+            $logger->log(Logger::ERROR, $ex->getMessage());
             return false;
         }
     }

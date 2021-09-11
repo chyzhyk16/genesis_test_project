@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Logger;
 use App\Service\User;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,6 +34,8 @@ class UserController extends AbstractController
         }
         $user = new User();
         if ($user->createUser($request)) {
+            $logger = new Logger();
+            $logger->log(Logger::INFO, 'New user created');
             return $this->return_json('User has been created successfully');
         } else {
             return $this->return_json('User hasn`t been created');
@@ -52,6 +55,8 @@ class UserController extends AbstractController
         $session = $this->requestStack->getSession();
         if ($user->loginUser($request)) {
             $session->set('user_logged', true);
+            $logger = new Logger();
+            $logger->log(Logger::INFO, 'User logged in');
             return $this->return_json('User has been logged in successfully');
         } else {
             $session->set('user_logged', false);
